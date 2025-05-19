@@ -13,6 +13,14 @@
     "react": "19.0.0",
     "react-native": "0.79.2"
   },
+  "codegenConfig":{
+    "name": "NativeFunctions",
+    "type":"modules",
+    "jsSrcsDir": "spec",
+    "android":{
+      "javaPackageName": "com.nativefunctions"
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",

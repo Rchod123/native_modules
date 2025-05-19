@@ -6,126 +6,116 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
+  SafeAreaView,
   Text,
-  useColorScheme,
+  TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+import NativeFunctions from './spec/NativeFunctions';
+const Button = ({text, onClick}: {text: String; onClick: () => void}) => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <TouchableOpacity
+      onPress={onClick}
+      style={{
+        backgroundColor: 'blue',
+        padding: 10,
+        borderRadius: 5,
+        margin: 5,
+      }}>
+      <Text style={{color: 'white'}}>{text}</Text>
+    </TouchableOpacity>
   );
-}
+};
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [value, setValue] = React.useState(0);
+  const [mul, setMul] = React.useState(0);
+  const [div, setDiv] = React.useState(0);
+  const [mod, setMod] = React.useState(0);
+  const [exp, setExp] = React.useState(0);
+  const [sqrt, setSqrt] = React.useState(0);
+  const [text, setText] = React.useState(0);
+  const [text2, setText2] = React.useState(0);
+  const [error, setError] = React.useState('');
+  const [sub, setSub] = React.useState(0);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const nativeAddition = async () => {
+    try {
+      const result = NativeFunctions?.add(text, text2) ?? 0;
+      setValue(result);
+    } catch (e: any) {
+      setError(e.message);
+    }
+  };
+  const nativeSubtraction = async () => {
+    try {
+      const result = NativeFunctions?.subtract(text, text2) ?? 0;
+      setSub(result);
+    } catch (e: any) {
+      setError(e.message);
+    }
   };
 
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the recommendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
+  const nativeMultiplication = async () => {
+    setMul(NativeFunctions?.multiply(text, text2) ?? 0);
+  };
 
+  const nativeDivision = async () => {
+    setDiv(NativeFunctions?.divide(text, text2) ?? 0);
+  };
+  const nativeModulus = async () => {
+    setMod(NativeFunctions?.squareRoot(text) ?? 0);
+  };
+
+  const nativeExponent = async () => {
+    setExp(NativeFunctions?.exponent(text) ?? 0);
+  };
+
+  const TextFormatter = ({text}: {text: String}) => {
+    return <Text style={{fontSize: 20, marginTop: 20}}>{text}</Text>;
+  };
   return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <SafeAreaView
+      style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <TextInput
+        placeholder="Enter the first number"
+        onChangeText={text => setText(parseInt(text))}
       />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
-        </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </View>
+      <TextInput
+        placeholder="Enter the second number"
+        onChangeText={text => setText2(parseInt(text))}
+      />
+      <TextFormatter text={`Native Addition: ${value}`} />
+
+      <View style={{flexDirection: 'row'}}>
+        <Button text="Login" onClick={() => console.log('Login')} />
+        <Button text="SignUp" onClick={() => console.log('SignIn')} />
+      </View>
+
+      <View style={{flexDirection: 'row'}}>
+        <Button text="Native Addition" onClick={() => nativeAddition()} />
+        <Button text="Native Subtraction" onClick={() => nativeSubtraction()} />
+      </View>
+      <View style={{flexDirection: 'row'}}>
+        <Button text="Native Multiply" onClick={() => nativeMultiplication()} />
+        <Button text="Native Division" onClick={() => nativeDivision()} />
+      </View>
+      <View style={{flexDirection: 'row'}}>
+        <Button text="Native Modulus" onClick={() => nativeModulus()} />
+        <Button text="Native exponent" onClick={() => nativeExponent()} />
+      </View>
+      <TextFormatter text={`Native subtraction: ${sub}`} />
+
+      <TextFormatter text={`Native multiplication: ${mul}`} />
+      <TextFormatter text={`Native divions: ${div}`} />
+      <TextFormatter text={`Native modules: ${mod}`} />
+      <TextFormatter text={`Native exponent: ${exp}`} />
+
+      
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
