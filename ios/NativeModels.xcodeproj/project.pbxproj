@@ -12,6 +12,7 @@
 		69DBCE48FD77A3DFEA337626 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		985C16862DDCBFD2006F2CED /* RCTNativeFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 985C16852DDCBFD2006F2CED /* RCTNativeFunctions.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,8 @@
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = NativeModels/AppDelegate.swift; sourceTree = "<group>"; };
 		7B60A863389942189AFB0E70 /* Pods-NativeModels.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NativeModels.debug.xcconfig"; path = "Target Support Files/Pods-NativeModels/Pods-NativeModels.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = NativeModels/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		985C16842DDCBFD2006F2CED /* RCTNativeFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTNativeFunctions.h; sourceTree = "<group>"; };
+		985C16852DDCBFD2006F2CED /* RCTNativeFunctions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RCTNativeFunctions.mm; sourceTree = "<group>"; };
 		CAD1C61334DB060F55AE1C56 /* libPods-NativeModels.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NativeModels.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -70,6 +73,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				985C16832DDCBF9D006F2CED /* NativeFunctions */,
 				13B07FAE1A68108700A75B9A /* NativeModels */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
@@ -87,6 +91,15 @@
 				13B07F961A680F5B00A75B9A /* NativeModels.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		985C16832DDCBF9D006F2CED /* NativeFunctions */ = {
+			isa = PBXGroup;
+			children = (
+				985C16842DDCBFD2006F2CED /* RCTNativeFunctions.h */,
+				985C16852DDCBFD2006F2CED /* RCTNativeFunctions.mm */,
+			);
+			path = NativeFunctions;
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -131,7 +144,7 @@
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1630;
 					};
 				};
 			};
@@ -246,6 +259,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				985C16862DDCBFD2006F2CED /* RCTNativeFunctions.mm in Sources */,
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
