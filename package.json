@@ -6,6 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",
+    "pod":"RCT_NEW_ARCH_ENABLED=1 && cd ios && pod install && cd ..",
     "start": "react-native start",
     "test": "jest"
   },
@@ -19,6 +20,11 @@
     "jsSrcsDir": "spec",
     "android":{
       "javaPackageName": "com.nativefunctions"
+    },
+    "ios":{
+      "moduleProvider":{
+        "NativeFunctions": "RCTNativeFunctions"
+      }
     }
   },
   "devDependencies": {
