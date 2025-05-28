@@ -6,23 +6,28 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",
-    "pod":"RCT_NEW_ARCH_ENABLED=1 && cd ios && pod install && cd ..",
+    "pod": "RCT_NEW_ARCH_ENABLED=1 && cd ios && pod install && cd ..",
     "start": "react-native start",
     "test": "jest"
   },
   "dependencies": {
+    "@react-navigation/native": "^7.1.9",
+    "@react-navigation/native-stack": "^7.3.13",
     "react": "19.0.0",
-    "react-native": "0.79.2"
+    "react-native": "0.79.2",
+    "react-native-fs": "^2.20.0",
+    "react-native-safe-area-context": "^5.4.1",
+    "react-native-screens": "^4.11.0"
   },
-  "codegenConfig":{
+  "codegenConfig": {
     "name": "NativeFunctions",
-    "type":"modules",
+    "type": "modules",
     "jsSrcsDir": "spec",
-    "android":{
+    "android": {
       "javaPackageName": "com.nativefunctions"
     },
-    "ios":{
-      "moduleProvider":{
+    "ios": {
+      "moduleProvider": {
         "NativeFunctions": "RCTNativeFunctions"
       }
     }
@@ -38,11 +43,12 @@
     "@react-native/eslint-config": "0.79.2",
     "@react-native/metro-config": "0.79.2",
     "@react-native/typescript-config": "0.79.2",
+    "@testing-library/react-native": "^13.2.0",
     "@types/jest": "^29.5.13",
     "@types/react": "^19.0.0",
     "@types/react-test-renderer": "^19.0.0",
     "eslint": "^8.19.0",
-    "jest": "^29.6.3",
+    "jest": "^29.7.0",
     "prettier": "2.8.8",
     "react-test-renderer": "19.0.0",
     "typescript": "5.0.4"
