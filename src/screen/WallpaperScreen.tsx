@@ -20,7 +20,7 @@ import {
   Modal,
 } from 'react-native';
 import RNFS from 'react-native-fs';
-import NativeWallpaper from '../../spec/NativeWallpaper.android';
+import NativeWallpaper from '../../spec/NativeWallpaper';
 import { heightPercentageToDP, widthPercentageToDP } from '../utils/responsive';
 
 

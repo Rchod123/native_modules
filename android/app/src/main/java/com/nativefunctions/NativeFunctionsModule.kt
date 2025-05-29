@@ -1,9 +1,10 @@
 package com.nativefunctions
 
 import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.module.annotations.ReactModule
 import kotlin.math.exp
 
-
+@ReactModule(name = "NativeFunctions")
 class NativeFunctionsModule(readContext : ReactApplicationContext) : NativeFunctionsSpec(readContext){
     override fun getName() = NAME
 
