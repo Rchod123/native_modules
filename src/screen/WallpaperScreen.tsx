@@ -52,18 +52,16 @@ function WallpaperScreen(): React.JSX.Element {
     setStatus(null);
 
     try {
-      // Get the asset URI
       const assetSource = Image.resolveAssetSource(selectedImage);
       let filePath = assetSource.uri;
 
-      // If the URI is an HTTP URL (development), download it to local storage
       if (filePath.startsWith('http')) {
         const localPath = `${RNFS.CachesDirectoryPath}/wallpaper.jpg`;
         await RNFS.downloadFile({fromUrl: filePath, toFile: localPath}).promise;
         filePath = localPath;
       }
 
-      const success = await NativeWallpaper.setWallpaper(filePath);
+      const success = await NativeWallpaper?.setWallpaper(filePath);
       if (success) {
         setStatus('Wallpaper set successfully!');
         Alert.alert('Success', 'Wallpaper set successfully!');

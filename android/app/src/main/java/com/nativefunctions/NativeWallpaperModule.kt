@@ -35,85 +35,63 @@ class NativeWallpaperModule(readContext: ReactApplicationContext): NativeWallpap
         imageUri: String?,
         promise: Promise?
     ) {
-
-       if(wallpaperPromise != null){
-           promise?.reject("ALREADY_IN_PROGRESS","Wallpaper setting operation already in progress.")
-           return
-       }
-        this.wallpaperPromise = promise
-        this.pendingImageUri = imageUri
-
-        val activity = currentActivity
-        if(activity == null){
-            promise?.reject("NO_ACTIVITY","Current activity is null")
+       if (wallpaperPromise != null) {
+            promise?.reject("ALREADY_IN_PROGRESS", "Wallpaper setting operation already in progress.")
             return
         }
-
-        when{
-            ContextCompat.checkSelfPermission(
-                activity,
-                Manifest.permission.SET_WALLPAPER
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                setWallpaperInternal(imageUri.toString(),promise)
-            }
-            else -> {
-
-               promise?.reject("PERMISSION_MISSING","SET_WALLPAPER permission is not granted. Please ensure it's declared in AndroidManifest.xml")
-            }
+        if (imageUri.isNullOrBlank()) {
+            promise?.reject("INVALID_URI", "Image URI is null or empty.")
+            return
         }
+        val activity = currentActivity
+        if (activity == null) {
+            promise?.reject("NO_ACTIVITY", "Current activity is null")
+            return
+        }
+        wallpaperPromise = promise
 
-
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.SET_WALLPAPER)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            setWallpaperInternal(imageUri, promise)
+        } else {
+            promise?.reject(
+                "PERMISSION_MISSING",
+                "SET_WALLPAPER permission is not granted. Please ensure it's declared in AndroidManifest.xml"
+            )
+            wallpaperPromise = null
+        }
     }
 
     private fun setWallpaperInternal(imageUri: String, promise: Promise?) {
         val context = reactApplicationContext
         val wallpaperManager = WallpaperManager.getInstance(context)
-        var uri: Uri? = null
-
-        // If the imageUri starts with "file://", convert it to a content URI using FileProvider
-        uri = if (imageUri.startsWith("file://")) {
-            val file = File(Uri.parse(imageUri).path!!)
-            FileProvider.getUriForFile(
-                context,
-                context.packageName + ".fileprovider",
-                file
-            )
-        } else if (imageUri.startsWith("/")) {
-            // If it's a raw file path, also convert to content URI
-            val file = File(imageUri)
-            FileProvider.getUriForFile(
-                context,
-                context.packageName + ".fileprovider",
-                file
-            )
-        } else {
-            // Otherwise, treat as a normal URI (content:// or http://)
-            imageUri.toUri()
+        val uri = when {
+            imageUri.startsWith("file://") || imageUri.startsWith("/") -> {
+                val file = File(Uri.parse(imageUri).path ?: imageUri)
+                FileProvider.getUriForFile(
+                    context,
+                    "${context.packageName}.fileprovider",
+                    file
+                )
+            }
+            else -> imageUri.toUri()
         }
 
         Executors.newSingleThreadExecutor().execute {
-            var inputStream: InputStream? = null
             try {
-                inputStream = context.contentResolver.openInputStream(uri!!)
-                if (inputStream == null) {
-                    promise?.reject("INVALID_URI", "Could not open input stream for URI: $imageUri")
-                    return@execute
-                }
-                val bitmap = BitmapFactory.decodeStream(inputStream)
-                if (bitmap == null) {
-                    promise?.reject("DECODE_ERROR", "Could not decode image from URI:$imageUri")
-                    return@execute
-                }
-                wallpaperManager.setBitmap(bitmap)
-                promise?.resolve(true)
+                context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    if (bitmap == null) {
+                        promise?.reject("DECODE_ERROR", "Could not decode image from URI: $imageUri")
+                    } else {
+                        wallpaperManager.setBitmap(bitmap)
+                        promise?.resolve(true)
+                    }
+                } ?: promise?.reject("INVALID_URI", "Could not open input stream for URI: $imageUri")
             } catch (e: IOException) {
                 promise?.reject("IO_ERROR", "Error setting wallpaper: ${e.message}", e)
             } finally {
-                try {
-                    inputStream?.close()
-                } catch (e: IOException) {
-                    println(e)
-                }
                 wallpaperPromise = null
             }
         }
